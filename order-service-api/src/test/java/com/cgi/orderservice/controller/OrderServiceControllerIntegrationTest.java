@@ -62,12 +62,12 @@ public class OrderServiceControllerIntegrationTest {
 	    HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
 		OrderDetail orderDetail = new OrderDetail();
-		orderDetail.setUserId("user10");
+		orderDetail.setUserId("user1");
 		orderDetail.setQuantity(Double.valueOf(3.5));
 		orderDetail.setPrice(new BigDecimal(303));
 		orderDetail.setOrderType(OrderType.SELL.name());
 		
-		String orderId = "user10";
+		String orderId = "user1";
 		
         ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/api/orders/cancel/" + orderId,
                 HttpMethod.PUT, entity, String.class);

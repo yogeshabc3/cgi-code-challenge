@@ -33,6 +33,10 @@ public class OrderServiceApplication {
 	   orderRepository.save(order4);
 	   OrderDetail order5 = new OrderDetail("user5", Double.valueOf(2.0), new BigDecimal(306), "CANCEL");
 	   orderRepository.save(order5);
+	   OrderDetail order6 = new OrderDetail("user6", Double.valueOf(3.0), new BigDecimal(306), "BUY");
+	   orderRepository.save(order6);
+	   OrderDetail order7 = new OrderDetail("user7", Double.valueOf(1.0), new BigDecimal(500), "BUY");
+	   orderRepository.save(order7);
     }
 
 }
