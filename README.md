@@ -1,15 +1,13 @@
 # cgi-code-challenge
 
-# cgi-code-challenge
-===================================================================================
 
 I have choosen SpringBoot REST Services for the following reasons:
   portablity, reusability, performance, manageable and scalablity
 
 
-===================================================================================
+=======================================================
 Order Service Api - Silver Bars Marketplace
-===================================================================================
+======================================================
 Tech-Stack :
     spring-boot - 2.5.3
     Java - 1.8
