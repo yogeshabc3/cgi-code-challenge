@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.cgi.orderservice.OrderServiceApplication;
 import com.cgi.orderservice.domain.OrderDetail;
+import com.cgi.orderservice.utils.OrderType;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = OrderServiceApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -48,7 +49,7 @@ public class OrderServiceControllerIntegrationTest {
 		orderDetail.setUserId("user1");
 		orderDetail.setQuantity(Double.valueOf(3.5));
 		orderDetail.setPrice(new BigDecimal(303));
-		orderDetail.setOrderType("SELL");
+		orderDetail.setOrderType(OrderType.SELL.name());
 		ResponseEntity<OrderDetail> postResponse = restTemplate.postForEntity(getRootUrl() + "/api/orders/", orderDetail,
 				OrderDetail.class);
 		assertNotNull(postResponse);
@@ -64,7 +65,7 @@ public class OrderServiceControllerIntegrationTest {
 		orderDetail.setUserId("user1");
 		orderDetail.setQuantity(Double.valueOf(3.5));
 		orderDetail.setPrice(new BigDecimal(303));
-		orderDetail.setOrderType("SELL");
+		orderDetail.setOrderType(OrderType.SELL.name());
 		
 		String orderId = "user1";
 		
