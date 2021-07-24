@@ -67,14 +67,22 @@ public class OrderServiceControllerIntegrationTest {
 		orderDetail.setOrderType("SELL");
 		
 		String orderId = "user1";
-
+		
         ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/api/orders/cancel/" + orderId,
                 HttpMethod.PUT, entity, String.class);
         String cancelBody = response.getBody();
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(cancelBody);
-		
+        assertNotNull(cancelBody);		
+	}
+	
+	@Test
+	public void testGetAllLiveOrders() {
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+        ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "api/orders/summary",
+                HttpMethod.GET, entity, String.class);
+        assertNotNull(response.getBody());
 	}
 
 }
