@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.cgi.orderservice.domain.OrderDetail;
 import com.cgi.orderservice.domain.OrderSummary;
 import com.cgi.orderservice.domain.OrderSummaryList;
+import com.cgi.orderservice.exception.RecordNotFoundException;
 import com.cgi.orderservice.repository.OrderServiceRepository;
 
 @Service
@@ -30,6 +31,10 @@ public class OrderServiceImpl implements OrderService {
         List<OrderSummary> orderSummaryBuyList = new ArrayList<OrderSummary>();
         List<OrderSummary> orderSummarySellList = new ArrayList<OrderSummary>();
         Optional<List<OrderDetail>> orderDetailList = orderServiceRepository.findLiveOrders();
+        
+        if (orderDetailList.isEmpty()) {
+        	return null;
+        }
         
         Map<String,List<OrderSummary>> orderSummaryGroupList =
         		orderDetailList
@@ -59,6 +64,8 @@ public class OrderServiceImpl implements OrderService {
 	
          Collections.sort(orderSummarySellList, Comparator.comparing(OrderSummary::getPrice));
          Collections.sort(orderSummaryBuyList, Comparator.comparing(OrderSummary::getPrice).reversed());
+         orderSummaryList.setBuy(orderSummaryBuyList);
+         orderSummaryList.setSell(orderSummarySellList);
         
 		return orderSummaryList;
 	}
