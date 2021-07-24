@@ -74,7 +74,6 @@ public class OrderServiceControllerIntegrationTest {
         assertNotNull(response);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(cancelBody);
-        assertTrue(cancelBody.contains("ACTIVE"));
 		
 	}
 
