@@ -30,7 +30,6 @@ public class OrderServiceController {
 
 	@PostMapping("/orders")
 	public ResponseEntity<OrderDetail> createOrder(@RequestBody OrderDetail orderData) {
-
 		OrderDetail _result = service.save(new OrderDetail(orderData.getUserId(), orderData.getQuantity(),
 				orderData.getPrice(), orderData.getOrderType()));
 		return new ResponseEntity<>(_result, HttpStatus.CREATED);
@@ -49,10 +48,12 @@ public class OrderServiceController {
 	}
 
 	@GetMapping("/orders/summary")
-	public ResponseEntity<List<OrderDetail>> getAllLiveOrders() {
+	public ResponseEntity<OrderSummaryList> getAllLiveOrders() {
 		OrderSummaryList orderSummaryList = service.findAllLiveOrders();
-		List<OrderDetail> orderDetailList = new ArrayList<>();
-		return new ResponseEntity<>(orderDetailList, HttpStatus.OK);
+        if (orderSummaryList == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+		return new ResponseEntity<>(orderSummaryList, HttpStatus.OK);
 	}
 
 }
