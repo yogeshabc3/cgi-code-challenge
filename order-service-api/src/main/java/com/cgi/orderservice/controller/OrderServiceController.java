@@ -17,44 +17,42 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cgi.orderservice.domain.OrderDetail;
 import com.cgi.orderservice.domain.OrderSummaryList;
+import com.cgi.orderservice.exception.RecordNotFoundException;
 import com.cgi.orderservice.service.OrderService;
 import com.cgi.orderservice.utils.OrderType;
 
 @RestController
 @RequestMapping("/api")
 public class OrderServiceController {
-	
-	
+
 	@Autowired
 	private OrderService service;
-	
+
 	@PostMapping("/orders")
-	public ResponseEntity<OrderSummaryList> createOrder(@RequestBody OrderDetail orderData) {
-		
-		OrderSummaryList orderSummaryList = service.findAllLiveOrders();
-		
-		return new ResponseEntity<>(orderSummaryList, HttpStatus.CREATED);		
+	public ResponseEntity<OrderDetail> createOrder(@RequestBody OrderDetail orderData) {
+
+		OrderDetail _result = service.save(new OrderDetail(orderData.getUserId(), orderData.getQuantity(),
+				orderData.getPrice(), orderData.getOrderType()));
+		return new ResponseEntity<>(_result, HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/orders/cancel/{orderId}")
 	public ResponseEntity<OrderDetail> cancelOrder(@PathVariable String orderId) {
-		 Optional<OrderDetail> orderDetail = service.findByOrderId(orderId);
-		 if (orderDetail.isPresent()) {
-	         OrderDetail detail = orderDetail.get();
-	         detail.setOrderType(OrderType.CANCEL.name());
-	         return new ResponseEntity<>(service.save(detail), HttpStatus.OK);
-		 } else {
-			 throw new RecordNotFoundException("Order Details not found " + orderId);
-		 }
-	         
-		 return new ResponseEntity<>(new OrderDetail(), HttpStatus.OK);
-		
+		Optional<OrderDetail> orderDetail = service.findByOrderId(orderId);
+		if (orderDetail.isPresent()) {
+			OrderDetail detail = orderDetail.get();
+			detail.setOrderType(OrderType.CANCEL.name());
+			return new ResponseEntity<>(service.save(detail), HttpStatus.OK);
+		} else {
+			throw new RecordNotFoundException("Order Details not found " + orderId);
+		}
 	}
-	
+
 	@GetMapping("/orders/summary")
-	public ResponseEntity<List<OrderDetail>> getAllLiveOrders() {	
-        List<OrderDetail> orderDetailList = new ArrayList<>();
-        return new ResponseEntity<>(orderDetailList, HttpStatus.OK);		
+	public ResponseEntity<List<OrderDetail>> getAllLiveOrders() {
+		OrderSummaryList orderSummaryList = service.findAllLiveOrders();
+		List<OrderDetail> orderDetailList = new ArrayList<>();
+		return new ResponseEntity<>(orderDetailList, HttpStatus.OK);
 	}
 
 }
