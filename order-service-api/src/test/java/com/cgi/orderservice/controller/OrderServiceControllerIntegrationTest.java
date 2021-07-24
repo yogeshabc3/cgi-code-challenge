@@ -80,7 +80,7 @@ public class OrderServiceControllerIntegrationTest {
 	public void testGetAllLiveOrders() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<String>(null, headers);
-        ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "api/orders/summary",
+        ResponseEntity<String> response = restTemplate.exchange(getRootUrl() + "/api/orders/summary",
                 HttpMethod.GET, entity, String.class);
         assertNotNull(response.getBody());
 	}
