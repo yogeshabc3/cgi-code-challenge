@@ -1,20 +1,23 @@
 package com.cgi.orderservice.service;
 
-import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Optional;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.cgi.orderservice.domain.OrderDetail;
+import com.cgi.orderservice.domain.OrderSummary;
+import com.cgi.orderservice.domain.OrderSummaryList;
 import com.cgi.orderservice.repository.OrderServiceRepository;
 import com.cgi.orderservice.utils.OrderType;
 
+
+@RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class OrderServiceTest {
 
@@ -30,11 +33,9 @@ public class OrderServiceTest {
 				OrderType.SELL.name());
 		orderServiceRepository.save(orderDetail);
 
-		Optional<List<OrderDetail>> orderDetailList = orderService.findAllLiveOrders();
-		OrderDetail orderDetailTest = orderDetailList.get().get(0);
+		OrderSummaryList orderDetailList = orderService.findAllLiveOrders();
+		OrderSummary orderDetailTest = orderDetailList.getBuy().get(0);
 
-		assertEquals(orderDetail.getUserId(), orderDetailTest.getUserId());
-		assertEquals(orderDetail.getOrderType(), orderDetailTest.getOrderType());
 		assertEquals(orderDetail.getPrice(), orderDetailTest.getPrice());
 		assertEquals(orderDetail.getQuantity(), orderDetailTest.getQuantity());
 	}
