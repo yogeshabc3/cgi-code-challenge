@@ -17,9 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cgi.orderservice.domain.OrderDetail;
 import com.cgi.orderservice.domain.OrderSummaryList;
+import com.cgi.orderservice.exception.DuplicateRecordFoundException;
 import com.cgi.orderservice.exception.RecordNotFoundException;
+import com.cgi.orderservice.exception.ValidationException;
 import com.cgi.orderservice.service.OrderService;
 import com.cgi.orderservice.utils.OrderType;
+import com.cgi.orderservice.utils.OrderTypeValidation;
+
 
 @RestController
 @RequestMapping("/api")
@@ -30,6 +34,17 @@ public class OrderServiceController {
 
 	@PostMapping("/orders")
 	public ResponseEntity<OrderDetail> createOrder(@RequestBody OrderDetail orderData) {
+	    Optional<OrderDetail> byOrderId = service.findByOrderId(orderData.getUserId());
+		if (byOrderId.isPresent()) {
+			if (OrderTypeValidation.validateOrderCancelled(byOrderId.get())) {
+				throw new ValidationException("Invalid Status. The Order has been already cancelled");
+			} else {
+				throw new DuplicateRecordFoundException(
+						"Duplicate Record Found with the same Order Id " + orderData.getUserId());
+			}
+		}
+
+
 		OrderDetail _result = service.save(new OrderDetail(orderData.getUserId(), orderData.getQuantity(),
 				orderData.getPrice(), orderData.getOrderType()));
 		return new ResponseEntity<>(_result, HttpStatus.CREATED);

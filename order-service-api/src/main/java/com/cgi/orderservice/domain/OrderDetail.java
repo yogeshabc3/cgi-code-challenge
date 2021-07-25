@@ -24,7 +24,7 @@ public class OrderDetail {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
-	@Column(name = "userId")
+	@Column(name = "userId", unique = true)
 	private String userId;
 
 	@Column(name = "quantity")

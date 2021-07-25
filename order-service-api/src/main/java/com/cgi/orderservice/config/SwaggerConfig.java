@@ -24,7 +24,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiEndPointsInfo() {
-	        return new ApiInfoBuilder().title("Spring Boot REST API")
+	        return new ApiInfoBuilder().title("Silver Bars Marketplace REST API - v3.1")
 	                .description("Order Service REST API")
 	                .contact(new Contact("Yogesh Chinnapurappa", "www.cgionline.com", "yogesh.chin@gmail.com"))
 	                .license("Apache 2.0")
